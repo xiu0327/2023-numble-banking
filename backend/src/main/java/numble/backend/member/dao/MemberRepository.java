@@ -13,4 +13,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("select m from Member m where m.userId in (:ids)")
     List<Member> findMemberByUserId(@Param("ids") List<String> ids);
     Optional<Member> findByUserId(String userId);
+    @Query("select m from Member m join fetch m.accounts where m.userId= :userId")
+    Optional<Member> findFetchJoinByUserId(@Param("userId") String userId);
 }
