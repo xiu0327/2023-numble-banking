@@ -12,18 +12,11 @@ import numble.backend.account.entity.Account;
 public class CreateAccountRequestDTO {
     private String userId;
     private String password;
-    private int money;
 
     @Builder
-    public CreateAccountRequestDTO(String userId, String password, int money) {
+    public CreateAccountRequestDTO(String userId, String password) {
         this.userId = userId;
         this.password = password;
-        this.money = money;
     }
 
-    public Account toEntity(){
-        return Account.builder()
-                .password(password)
-                .money(money).build();
-    }
 }

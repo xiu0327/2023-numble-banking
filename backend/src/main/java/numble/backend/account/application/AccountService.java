@@ -11,7 +11,8 @@ import numble.backend.common.dto.BasicResponseDTO;
  * findAccount : 계좌 조회
  */
 public interface AccountService {
-    BasicResponseDTO<Long> create(String userId, String accountPassword, int money);
-    TransferResponseDTO transfer(String from, String to, int money);
+    BasicResponseDTO<String> create(String ownerId, String accountPassword);
+    TransferResponseDTO transfer(String from, String to, String password, int money);
     AccountDTO findAccount(String accountNumber);
+    BasicResponseDTO<Boolean> notify(String message);
 }

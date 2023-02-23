@@ -9,6 +9,6 @@ import java.util.Optional;
 
 public interface AccountRepository extends JpaRepository<Account, Long> {
 
-    @Query("select a from Account a join fetch a.member m where a.number= :number")
-    Optional<Account> findAccountByNumber(@Param("number") String number);
+    @Query("select a from Account a join fetch a.owner m where a.accountNumber= :accountNumber")
+    Optional<Account> findAccountByNumber(@Param("accountNumber") String accountNumber);
 }

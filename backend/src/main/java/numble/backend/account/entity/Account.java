@@ -4,11 +4,13 @@ package numble.backend.account.entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import numble.backend.account.exception.AccountExceptionType;
+import numble.backend.common.exception.BusinessException;
 import numble.backend.member.entity.Member;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Entity
 @Table(name = "account")
@@ -21,44 +23,76 @@ public class Account {
     private Long id;
 
     @Column(name = "account_number")
-    private String number;
+    private String accountNumber;
 
     @Column(name = "account_password")
-    private String password;
+    private String accountPassword;
 
-    @Column(name = "money")
-    private int money;
+    @Column(name = "amount")
+    private int amount;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private Member member;
+    @JoinColumn(name = "owner_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    private Member owner;
 
     @Builder
-    public Account(String password, Member member, int money) {
-        this.number = UUID.randomUUID().toString();
-        this.password = password;
-        this.member = member;
-        this.money = money;
+    public Account(String accountPassword, Member owner) {
+        this.accountNumber = createAccountNumber();
+        this.accountPassword = accountPassword;
+        this.amount = 0;
+        this.owner = owner;
     }
 
     /* 비즈니스 로직 */
-    public void updateMoney(int money){
-        this.money = money;
+    public void deposit(int money){
+        int presentMoney = this.amount;
+        this.amount = presentMoney + money;
     }
 
-    public Long getId() {
-        return id;
+    public void withdrawal(int money){
+        isPossible(money);
+        int presentMoney = this.amount;
+        this.amount = presentMoney - money;
     }
 
-    public String getNumber() {
-        return number;
+    public void checkAccountPassword(String accountPassword){
+        if (!accountPassword.equals(this.accountPassword)){
+            throw new BusinessException(AccountExceptionType.NOT_EQUAL_PASSWORD);
+        }
     }
 
-    public Member getMember() {
-        return member;
+    public void isPossible(int money){
+        if (this.amount < money){
+            throw new BusinessException(AccountExceptionType.LACK_MONEY);
+        }
     }
 
-    public int getMoney() {
-        return money;
+    public String createAccountNumber(){
+        return UUID.randomUUID().toString();
+    }
+
+    /**
+     * 친구인지 아닌지 확인
+     * @param friends 돈을 입금하는 쪽의 친구 목록
+     */
+    public void isFriend(List<String> friends){
+        boolean result = friends.stream().anyMatch(f -> f.equals(owner.getUserId()));
+        if (!result){
+            throw new BusinessException(AccountExceptionType.NOT_FRIEND);
+        }
+    }
+
+    /* get */
+
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    public Member getOwner() {
+        return owner;
+    }
+
+    public int getAmount() {
+        return amount;
     }
 }

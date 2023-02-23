@@ -1,10 +1,9 @@
-package numble.backend.member.api;
+package numble.backend.friendship;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import numble.backend.member.application.MemberAuthService;
-import numble.backend.member.application.MemberService;
-import numble.backend.member.dto.request.AddFriendRequestDTO;
-import numble.backend.member.entity.Member;
+import numble.backend.common.util.TestData;
+import numble.backend.friendship.application.FriendshipService;
+import numble.backend.friendship.dto.AddFriendRequestDTO;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -14,14 +13,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
-import javax.persistence.EntityManager;
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -31,16 +26,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @Transactional
 @AutoConfigureMockMvc
-class MemberControllerTest {
+class FriendshipControllerTest {
 
     @Autowired MockMvc mockMvc;
     @Autowired WebApplicationContext context;
-    @Autowired MemberAuthService memberAuthService;
-    @Autowired MemberService memberService;
-    @Autowired EntityManager em;
-
-    String password = "password123";
-    String username = "사용자";
+    @Autowired FriendshipService friendshipService;
+    @Autowired TestData testData;
 
     @Before
     public void setting(){
@@ -49,24 +40,14 @@ class MemberControllerTest {
                 .build();
     }
 
-    @Transactional
-    private Member createMember(String userId) {
-        Member member = Member.builder()
-                .userId(userId)
-                .password(password)
-                .username(username).build();
-        Long memberId = memberAuthService.join(member);
-        return em.find(Member.class, memberId);
-    }
-
     @Test
     void 친구_추가() throws Exception {
-        Member member = createMember("aaa123");
-        Member friend = createMember("bbb123");
+        String ownerId = testData.createMember("owner111");
+        String friendId = testData.createMember("friend111");
 
         AddFriendRequestDTO request = AddFriendRequestDTO.builder()
-                .userId(member.getUserId())
-                .friendId(friend.getUserId()).build();
+                .ownerId(ownerId)
+                .friendId(friendId).build();
 
         String jsonRequest = new ObjectMapper().writeValueAsString(request);
 
@@ -80,12 +61,12 @@ class MemberControllerTest {
 
     @Test
     void 친구_목록_조회() throws Exception {
-        Member member = createMember("aaa123");
-        Member friend = createMember("bbb123");
+        String ownerId = testData.createMember("owner111");
+        String friendId = testData.createMember("friend111");
 
-        memberService.addFriend(member.getUserId(), friend.getUserId());
+        friendshipService.addFriend(ownerId, friendId);
 
-        mockMvc.perform(get("/api/friends?userId=" + member.getUserId())
+        mockMvc.perform(get("/api/friends?ownerId=" + ownerId + "&page=0")
         ).andExpect(status().is2xxSuccessful()
         ).andExpect(jsonPath("$.friends").isArray()
         ).andDo(print());

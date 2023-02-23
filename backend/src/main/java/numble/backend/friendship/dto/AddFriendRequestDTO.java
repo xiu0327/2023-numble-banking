@@ -1,4 +1,4 @@
-package numble.backend.member.dto.request;
+package numble.backend.friendship.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddFriendRequestDTO {
-    private String userId;
+    private String ownerId;
     private String friendId;
 }

@@ -11,7 +11,8 @@ public enum MemberExceptionType implements BasicExceptionType {
 
     NOT_FOUND_MEMBER("NOT_FOUND_MEMBER", "회원을 찾을 수 없습니다.", HttpStatus.BAD_REQUEST),
     DUPLICATE_MEMBER("DUPLICATE_MEMBER", "중복된 회원 입니다.", HttpStatus.BAD_REQUEST),
-    NOT_FOUND_FRIEND("NOT_FOUND_FRIEND", "친구가 없습니다.", HttpStatus.BAD_REQUEST)
+    NOT_EQUAL_PASSWORD("NOT_EQUAL_PASSWORD", "비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST),
+    NOT_EQUAL_ID("NOT_EQUAL_ID", "아이디가 일치하지 않습니다.", HttpStatus.BAD_REQUEST)
     ;
 
     private final String errorCode;

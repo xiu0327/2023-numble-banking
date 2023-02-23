@@ -1,4 +1,4 @@
-package numble.backend.member.dto.response;
+package numble.backend.friendship.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberDTO {
+public class FriendDTO {
     private String userId;
     private String username;
 }

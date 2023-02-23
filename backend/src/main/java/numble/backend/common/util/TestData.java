@@ -1,47 +1,57 @@
 package numble.backend.common.util;
 
-
 import lombok.RequiredArgsConstructor;
+import numble.backend.account.entity.Account;
 import numble.backend.member.application.MemberAuthService;
-import numble.backend.member.dao.MemberRepository;
-import numble.backend.member.dto.request.JoinMemberRequestDTO;
-import org.springframework.context.annotation.Profile;
+import numble.backend.member.entity.Member;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
+import javax.persistence.EntityManager;
 
-@Profile("local")
 @Component
 @RequiredArgsConstructor
 public class TestData {
 
-    private final InitTestDataService initTestDataService;
-    public static final String USER_A_ID = "aaa123";
-    public static final String USER_B_ID = "bbb123";
+    @Autowired
+    MemberAuthService memberAuthService;
+    @Autowired
+    EntityManager em;
+    public static final String PASSWORD = "password123";
+    public static final String USERNAME = "사용자";
 
-    @PostConstruct
-    private void init(){
-        initTestDataService.init();
+    public static final int FROM_PRESENT_MONEY = 30000;
+    public static final int TO_PRESENT_MONEY = 10000;
+    public static final int MONEY = 10000;
+    public static final String ACCOUNT_PASSWORD = "1234";
+
+    @Transactional
+    public String createMember(String userId) {
+        Member member = Member.builder()
+                .userId(userId)
+                .password(PASSWORD)
+                .username(USERNAME).build();
+        Long memberId = memberAuthService.join(member);
+        return em.find(Member.class, memberId).getUserId();
     }
 
-    @Component
-    @RequiredArgsConstructor
-    static class InitTestDataService{
-        private final MemberAuthService memberAuthService;
-        private final MemberRepository memberRepository;
-
-        @Transactional
-        public void init(){
-            memberAuthService.join(JoinMemberRequestDTO.builder()
-                    .userId("aaa123")
-                    .password("password123")
-                    .username("사용자_A").build().toEntity());
-
-            memberAuthService.join(JoinMemberRequestDTO.builder()
-                    .userId("bbb123")
-                    .password("password123")
-                    .username("사용자_B").build().toEntity());
-        }
+    @Transactional
+    public void settingMoney(String accountNumber){
+        Account account = getAccount(accountNumber);
+        account.deposit(FROM_PRESENT_MONEY);
     }
+
+    @Transactional(readOnly = true)
+    public Account findAccountByNumber(String accountNumber){
+        return getAccount(accountNumber);
+    }
+
+    private Account getAccount(String accountNumber) {
+        Account account = em.createQuery("select a from Account a where a.accountNumber= :accountNumber", Account.class)
+                .setParameter("accountNumber", accountNumber)
+                .getResultList().stream().findAny().get();
+        return account;
+    }
+
 }
