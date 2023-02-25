@@ -50,7 +50,6 @@ public class Account {
     }
 
     public void withdrawal(int money){
-        isPossible(money);
         int presentMoney = this.amount;
         this.amount = presentMoney - money;
     }

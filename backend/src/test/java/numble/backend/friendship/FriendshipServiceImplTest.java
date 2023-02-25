@@ -13,10 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -73,5 +75,64 @@ class FriendshipServiceImplTest {
         log.info(result.toString());
         Assertions.assertThat(result.stream()
                         .anyMatch(o -> o.getUserId().equals(friendId))).isTrue();
+    }
+
+    @Test
+    void 친구_목록_조회_쿼리_테스트(){
+        // given
+        String ownerId = testData.createMember("owner111");
+        String friendId = testData.createMember("friend111");
+        friendshipService.addFriend(ownerId, friendId);
+
+        String friendId2 = testData.createMember("friend222");
+        friendshipService.addFriend(ownerId, friendId2);
+
+        List<String> friends = new ArrayList<>();
+        friends.add(friendId);
+        friends.add(friendId2);
+
+        String sql = "select distinct m from Member m inner join Friendship f on m.userId = f.friendId where f.ownerId=: ownerId";
+
+        List<Member> ownerId1 = em.createQuery(sql, Member.class)
+                .setParameter("ownerId", ownerId)
+                .getResultList();
+
+        for (Member member : ownerId1) {
+            log.info("member = {}", member.getUserId());
+            Assertions.assertThat(member.getUserId()).isIn(friends);
+        }
+    }
+
+    @Test
+    void 친구_목록_생성_시간_테스트() throws InterruptedException {
+        // given
+        String ownerId = testData.createMember("owner111");
+        String friendId = testData.createMember("friend111");
+
+        /* 연관매핑 관계를 맺었을 때 - 생성 */
+        long start1 = System.currentTimeMillis();
+        for (int i = 0; i < 50; i++){
+            selectMember(ownerId);
+            selectMember(friendId);
+            Thread.sleep(500); // save 시간
+        }
+        log.info("연관 매핑 시간 = {}", System.currentTimeMillis() - start1);
+
+        /* 연관 매핑을 맺지 않았을 때 - 생성 */
+        long start2 = System.currentTimeMillis();
+        for (int i = 0; i < 50; i++){
+            Friendship friendship = Friendship.builder()
+                    .ownerId(ownerId)
+                    .friendId(friendId).build();
+            Thread.sleep(500); // save 시간
+        }
+        log.info("연관 매핑 하지 않은 시간 = {}", System.currentTimeMillis() - start2);
+
+    }
+
+    Member selectMember(String id){
+        return em.createQuery("select m from Member m where m.userId= :id", Member.class)
+                .setParameter("id", id)
+                .getResultList().stream().findAny().get();
     }
 }
