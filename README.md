@@ -25,7 +25,8 @@ MySQL은 innoDB라는 스토리지 엔진을 사용한다. innoDB 엔진은 여�
 
 → **물리적 외래키를 걸지 않는다. 외래키 관계가 있을 땐 참조값만 DB에 넣어 사용한다.**
 
-![erd.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/49f7ee62-9969-4c0b-a95b-79fc0dbc3acf/erd.png)
+<img width="900" alt="erd" src="https://user-images.githubusercontent.com/78461009/221342838-6e960d7b-1605-4c76-94f3-5eb2cc6545fa.png">
+
 
 이번 프로젝트를 진행하며 DB에 물리적 FK를 걸지 않기로 했다. ERD에는 관계를 표현하기 위해 FK를 표시해뒀을 뿐, 실제 DB엔 물리적 FK가 걸려있지 않다.
 
@@ -56,7 +57,7 @@ private Member owner;
 
 # 3. API 스펙
 
-→ [**HTTP API 설계 원칙](https://github.com/yoondo/http-api-design/tree/master/ko#%EC%98%AC%EB%B0%94%EB%A5%B8-%EC%83%81%ED%83%9C-%EC%BD%94%EB%93%9C%EB%A5%BC-%EB%B0%98%ED%99%98%ED%95%98%EB%9D%BC)을 준수한다.**
+→ **[HTTP API 설계 원칙](https://github.com/yoondo/http-api-design/tree/master/ko#%EC%98%AC%EB%B0%94%EB%A5%B8-%EC%83%81%ED%83%9C-%EC%BD%94%EB%93%9C%EB%A5%BC-%EB%B0%98%ED%99%98%ED%95%98%EB%9D%BC)을 준수한다.**
 
 흔히 REST API를 사용하고 있다 하지만, 실제 REST API의 설계 원칙을 모두 준수하여 개발하는 사람은 드물다. REST API는 HATEOAS라는 원칙을 지켜야 하는데, 이를 지키기 쉽지 않기 때문이다. HATEOAS는 응답 본문에 애플리케이션 상태 전이가 가능한 경우를 명시해야 한다. 그러나 현재 프로젝트의 API 직렬화 포맷은 Json이기 때문에 응답 본문에 상태 전이를 표시하기 힘들다. 또한 REST API의 설계 원칙을 따르지 않아도 현재 요구사항을 만족하는 API를 충분히 만들 수 있다.
 
@@ -85,7 +86,7 @@ private Member owner;
 
 ## 5.2 연관매핑
 
-→  **애너테이션을 활용한 연관매핑은 최대한 지양**
+→  **애너테이션을 활용한 연관매핑은 최대한 지양한다.**
 
 JPA는 @ManyToOne, @OneToOne과 같은 애너테이션을 이용하여 연관된 객체를 로딩하는 기능을 제공한다. 그래서 애그리거트 루트에 대한 참조를 쉽게 구현하고 필드를 이용한 애그리거트 참조를 사용한다면 개발이 편하고 유지보수하기 쉬워진다.
 
@@ -132,7 +133,7 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
 
 반면 식별자값으로 간접참조하면 불러올 필요없이 바로 ownerId와 friendId로 friendship을 DB에 저장하기만 하면 된다. 따라서 전체적으로 보면 3번의 쿼리를 1번으로 줄였다고 볼 수 있다.
 
-![스크린샷 2023-02-25 오후 3.15.36.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/1e30629b-15cc-432e-ad92-34e109cef396/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2023-02-25_%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE_3.15.36.png)
+<img width="719" alt="스크린샷 2023-02-25 오후 3 15 36" src="https://user-images.githubusercontent.com/78461009/221342903-a58319de-26bc-4b87-a473-3af40e55fd3a.png">
 
 실제로 저장 속도를 테스트해보면 연관 매핑 하지 않았을 때가 더 빠르다.
 
