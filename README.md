@@ -102,68 +102,7 @@ private Member owner;
 
 →  **애너테이션을 활용한 연관매핑은 최대한 지양한다.**
 
-JPA는 @ManyToOne, @OneToOne과 같은 애너테이션을 이용하여 연관된 객체를 로딩하는 기능을 제공한다. 그래서 애그리거트 루트에 대한 참조를 쉽게 구현하고 필드를 이용한 애그리거트 참조를 사용한다면 개발이 편하고 유지보수하기 쉬워진다.
-
-하지만 필드를 이용한 애그리거트 참조는 **`편한 탐색 오용`**, `성능 문제`, `확장 어려움`을 야기한다.
-
-```java
-public class Friendship {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "friendship_id")
-    private Long id;
-
-    @Embedded
-    private Transaction transaction;
-
-    @Column(name = "owner_id")
-    private String ownerId;
-
-    @Column(name = "friend_id")
-    private String friendId;
-
-...
-}
-```
-
-원래 Friendship 엔티티를 만들 때, owner와 friend 모두 회원이기 때문에 @ManyToOne으로 연관관계 매핑을 맺었다. 하지만 가만 생각해보면 ***Friendship의 주요 기능은 친구 관계를 정의하는 것***이다. 특정 회원의 친구는 누가누가 있는지만 알면 된다. 그래서 굳이 연관 매핑을 맺어서 회원 테이블 필드를 가져올 필요가 있는가 고민되었고, 결국 연관매핑을 제외하고 회원 식별자 값을 넣었다.
-
-이때 회원 일련번호가 아닌 회원 아이디를 넣은 이유는 어차피 클라이언트에서 회원 일련번호가 아닌 회원 아이디를 Authentication 헤더로 전달 받는다. 그래서 굳이 findByUserId 해서 DB에서 회원 일련번호를 가져오지 말고 바로 userId로 Friendship 객체를 생성해서 테이블에 저장하는 게 더 효율적이라 판단했다.
-
-```java
-public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
-    @Query("select distinct m from Member m inner join Friendship f on m.userId = f.friendId where f.ownerId=: ownerId")
-    List<Member> findFriendList(@Param("ownerId") String ownerId, Pageable pageable);
-
-    @Query("select f.friendId from Friendship f where f.ownerId= :ownerId")
-    List<String> findAllByOwnerId(@Param("ownerId") String ownerId);
-}
-```
-
-기존 @OneToMany로 가져오던 친구 목록은 직접 쿼리문을 짜서 가져왔다.
-
-@OneToMany로 가져오던 지금처럼 쿼리문을 짜면 친구 목록을 가져오는 쿼리의 수는 1회로 동일하다. 다만, @OneToMany를 사용하면 mapperBy를 통해 외래키를 가진 엔티티를 정의해줘야 한다. 그럼 친구 관계를 저장할 때 onwer와 friend 회원 엔티티를 findByUserId로 조회해서 가져와야 한다.
-
-반면 식별자값으로 간접참조하면 불러올 필요없이 바로 ownerId와 friendId로 friendship을 DB에 저장하기만 하면 된다. 따라서 전체적으로 보면 3번의 쿼리를 1번으로 줄였다고 볼 수 있다.
-
-<img width="719" alt="스크린샷 2023-02-25 오후 3 15 36" src="https://user-images.githubusercontent.com/78461009/221342903-a58319de-26bc-4b87-a473-3af40e55fd3a.png">
-
-실제로 저장 속도를 테스트해보면 연관 매핑 하지 않았을 때가 더 빠르다.
-
-→ **Friendship은 정보를 포함하기 보단 관계를 정의하는 역할이기 때문에 연관매핑을 맺지 않고 owner와 friend의 식별자만 사용했다.**
-
-### 4.2.1 고민
-
-사실 연관매핑에 대한 고민은 끝이 없을 것 같다. 쿼리문을 직접 짜기엔 너무 귀찮다. 간단한 어노테이션 하나면 조인이 이뤄지는데 굳이 싶다. N+1이 문제라면 fetch join으로 불러오면 되지 않을까하는 게으른 생각이 가득하다.
-
-이전 넘블챌린지를 수행하고 코드 리뷰를 받았을 때도, @OneToMany 부분에서 DB I/O 성능 저하가 발생한다고 지적해주셨다.
-
-1. 간단한 어플리케이션은 다르겠지만, 현업에서는 @OneToMany를 최대한 지양한다.
-2. 불필요한 N+1 쿼리가 발생하기 때문이다.
-3. 개발자가 인지 못할 장애가 발생할 수 있다.
-
-나도 조언을 듣고 연관매핑을 사용해야할 경우엔 “정말 적절한 방법인가?” 한번쯤 생각해보고 쓰게 되었다. 양방향으로 연관관계를 매핑하는 건 어느 정도 불편함을 많이 겪어서 최대한 안 쓰는 방향으로 가는 게 맞는 것 같지만, 단방향은 경우에 따라서 써도 되지 않을까 싶다. 매핑을 쓰는 게 좋은지 안 좋은지 언제나 고민되는 부분이다.
+- [연관매핑을 지향하는 이유](https://github.com/xiu0327/2023-numble-banking/wiki/%EC%97%B0%EA%B4%80%EB%A7%A4%ED%95%91%EC%9D%84-%EC%A7%80%ED%96%A5%ED%95%98%EB%8A%94-%EC%9D%B4%EC%9C%A0)
 
 ## 5. 트랜잭션 원자성 보장 및 동시성 문제 해결
 
