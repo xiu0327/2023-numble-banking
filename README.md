@@ -1,9 +1,23 @@
-# 1. 프로젝트 목표
+# 1. 프로젝트 개요
+
+## 1.1 프로젝트 목표
 
 1. 객체지향 원리를 이해하고 클린 코드 규칙을 준수하여 올바른 코드를 작성합니다.
 2. 계좌이체 시 발생 가능한 동시성 문제를 해결하고 트랜잭션 원자성을 보장합니다.
 3. 단순한 기능 구현 뿐만 아니라 대용량 트래픽까지 고려한 뱅킹 서버를 구축합니다.
 4. 친구 목록 조회 API의 요구사항을 추가하여 기능을 추가해보며 코드 유지보수성이 좋은지 테스트해봅니다.
+
+## 1.2 요구사항 분석 및 도메인 모델링
+
+<img width="917" alt="스크린샷 2023-02-23 오후 10 42 09" src="https://user-images.githubusercontent.com/78461009/221401897-815bd51a-d30e-4c86-a30d-66507aa0b25b.png">
+
+- [요구사항 분석 및 도메인 모델링](https://github.com/xiu0327/2023-numble-banking/wiki/%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD-%EB%B6%84%EC%84%9D-%EB%B0%8F-%EB%8F%84%EB%A9%94%EC%9D%B8-%EB%AA%A8%EB%8D%B8%EB%A7%81)
+
+## 1.3 기술 스택
+
+| SpringBoot | MySQL |  JPA   |  JUnit   |
+| :--------: | :--------: | :------: | :-----: |
+|   <img width="100" height="100" src="https://user-images.githubusercontent.com/78461009/221402061-1d45c959-b47f-4b9f-b078-d483132b0066.jpg" />   |   <img width="100" height="100" src="https://user-images.githubusercontent.com/78461009/221402167-e521a45a-e55c-4992-a993-747d44c75c21.jpeg" />    | <img width="100" height="100" src="https://user-images.githubusercontent.com/78461009/221402410-676c7da0-fa34-431c-a44a-482edcd6ce41.png" /> | <img width="100" height="100" src="https://user-images.githubusercontent.com/78461009/221402423-7cba955f-cc75-41bd-bb34-120c491bf190.jpg" /> |
 
 # 2. RDB
 
@@ -154,3 +168,4 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
 ## 5. 트랜잭션 원자성 보장 및 동시성 문제 해결
 
 - [분명 돈이 있었는데요 없었습니다](https://github.com/xiu0327/2023-numble-banking/wiki/%ED%8A%B8%EB%9E%9C%EC%9E%AD%EC%85%98-%EC%9B%90%EC%9E%90%EC%84%B1-%EB%B0%8F-%EB%8F%99%EC%8B%9C%EC%84%B1-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0)
+
