@@ -129,7 +129,7 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
 
 기존 @OneToMany로 가져오던 친구 목록은 직접 쿼리문을 짜서 가져왔다.
 
-@OneToMany로 가져오던 지금처럼 쿼리문을 짜던 친구 목록을 가져오는 쿼리의 수는 1회로 동일하다. 다만, @OneToMany를 사용하면 mapperBy를 통해 외래키를 가진 엔티티를 정의해줘야 한다. 그럼 친구 관계를 저장할 때 onwer와 friend 회원 엔티티를 findByUserId로 조회해서 가져와야 한다.
+@OneToMany로 가져오던 지금처럼 쿼리문을 짜면 친구 목록을 가져오는 쿼리의 수는 1회로 동일하다. 다만, @OneToMany를 사용하면 mapperBy를 통해 외래키를 가진 엔티티를 정의해줘야 한다. 그럼 친구 관계를 저장할 때 onwer와 friend 회원 엔티티를 findByUserId로 조회해서 가져와야 한다.
 
 반면 식별자값으로 간접참조하면 불러올 필요없이 바로 ownerId와 friendId로 friendship을 DB에 저장하기만 하면 된다. 따라서 전체적으로 보면 3번의 쿼리를 1번으로 줄였다고 볼 수 있다.
 
