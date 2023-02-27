@@ -106,5 +106,7 @@ private Member owner;
 
 # 5. 트랜잭션 원자성 보장 및 동시성 문제 해결
 
+→  **@Transaction과 낙관적 락을 이용하여 동시성 해결.**
+
 - [분명 돈이 있었는데요 없었습니다](https://github.com/xiu0327/2023-numble-banking/wiki/%ED%8A%B8%EB%9E%9C%EC%9E%AD%EC%85%98-%EC%9B%90%EC%9E%90%EC%84%B1-%EB%B0%8F-%EB%8F%99%EC%8B%9C%EC%84%B1-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0)
 
