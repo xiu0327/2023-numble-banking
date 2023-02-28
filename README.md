@@ -73,4 +73,4 @@ MySQL은 innoDB라는 스토리지 엔진을 사용한다. innoDB 엔진은 여�
 
 → 거래량이 높은 친구 순으로 친구 목록 조회 해보기
 
-- [거래량에 대한 고찰](https://github.com/xiu0327/2023-numble-banking/wiki/%F0%9F%A5%B2-%EA%B1%B0%EB%9E%98%EB%9F%89%EC%97%90-%EB%8C%80%ED%95%9C-%EA%B3%A0%EC%B0%B0)
+- [거래량에 대한 고찰](https://github.com/xiu0327/2023-numble-banking/wiki/%EA%B1%B0%EB%9E%98%EB%9F%89%EC%97%90-%EB%8C%80%ED%95%9C-%EA%B3%A0%EC%B0%B0)
