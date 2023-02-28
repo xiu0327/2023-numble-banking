@@ -39,35 +39,7 @@ MySQL은 innoDB라는 스토리지 엔진을 사용한다. innoDB 엔진은 여�
 
 → **물리적 외래키를 걸지 않는다. 외래키 관계가 있을 땐 참조값만 DB에 넣어 사용한다.**
 
-<img width="900" alt="erd" src="https://user-images.githubusercontent.com/78461009/221342838-6e960d7b-1605-4c76-94f3-5eb2cc6545fa.png">
-
-
-이번 프로젝트를 진행하며 DB에 물리적 FK를 걸지 않기로 했다. ERD에는 관계를 표현하기 위해 FK를 표시해뒀을 뿐, 실제 DB엔 물리적 FK가 걸려있지 않다.
-
-지금껏 나는 물리적 FK를 사용해왔다. 하지만 프로젝트를 몇번 만들어보니까 물리적 FK가 불편하다는 걸 깨달았다.
-
-1. 성능 문제
-
-   물리적 FK를 걸면 DB에서 테이블 간의 무결성을 보장하기 위해 제약조건을 설정한다. 그래서 연관관계가 복잡해지면 쿼리에 추가해야할 리소스가 늘어났다. 이는 성능을 하락시킬 수 있다.
-
-2. 데이터 삭제 및 갱신 문제
-
-   물리적 FK를 걸면 부모 테이블의 레코드가 삭제되거나 업데이트될 때 자식 테이블의 레코드도 함께 갱신되거나 삭제된다. 하지만 이런 경우 부모 테이블이나 자식 테이블 중 하나에서 오류가 발생할 경우 데이터 일관성이 깨질 수 있다. 그래서 FK가 걸린 부모 엔티티 객체를 삭제하려고 하면 JPA는 컴파일 오류를 발생시킨다.
-
-3. 데이터 베이스 디자인 제한
-
-   FK는 테이블 간 관계를 명확하게 정의하는 데 사용된다. 하지만 데이터 베이스를 설계할 때, 다양한 요구사항에 따라 관계 유형을 설정할 수 있다. 하지만 물리적 FK를 건다면 이런 유연성을 제한한다.
-
-
-```java
-@ManyToOne(fetch = FetchType.LAZY)
-@JoinColumn(
-		name = "owner_id", 
-		foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-private Member owner;
-```
-
-따라서 이번 프로젝트를 진행할 때, 연관매핑을 사용해도 `@ForeignKey` 어노테이션을 사용하여 실제 DB엔 외래키가 걸리지 않도록 했다.
+- [물리적 FK를 사용하지 않는 이유](https://github.com/xiu0327/2023-numble-banking/wiki/%F0%9F%8C%95-%EB%AC%BC%EB%A6%AC%EC%A0%81-FK%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%98%EC%A7%80-%EC%95%8A%EB%8A%94-%EC%9D%B4%EC%9C%A0)
 
 # 3. API 스펙
 
@@ -110,3 +82,8 @@ private Member owner;
 
 - [분명 돈이 있었는데요 없었습니다](https://github.com/xiu0327/2023-numble-banking/wiki/%ED%8A%B8%EB%9E%9C%EC%9E%AD%EC%85%98-%EC%9B%90%EC%9E%90%EC%84%B1-%EB%B0%8F-%EB%8F%99%EC%8B%9C%EC%84%B1-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0)
 
+# 6. 거래량에 대한 고찰
+
+→ 거래량이 높은 친구 순으로 친구 목록 조회 해보기
+
+- [거래량에 대한 고찰](https://github.com/xiu0327/2023-numble-banking/wiki/%F0%9F%A5%B2-%EA%B1%B0%EB%9E%98%EB%9F%89%EC%97%90-%EB%8C%80%ED%95%9C-%EA%B3%A0%EC%B0%B0)
