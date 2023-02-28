@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -129,7 +130,6 @@ class FriendshipServiceImplTest {
         log.info("연관 매핑 하지 않은 시간 = {}", System.currentTimeMillis() - start2);
 
     }
-
     Member selectMember(String id){
         return em.createQuery("select m from Member m where m.userId= :id", Member.class)
                 .setParameter("id", id)

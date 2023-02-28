@@ -2,6 +2,7 @@ package numble.backend.common.util;
 
 import lombok.RequiredArgsConstructor;
 import numble.backend.account.entity.Account;
+import numble.backend.friendship.entity.Friendship;
 import numble.backend.member.application.MemberAuthService;
 import numble.backend.member.entity.Member;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class TestData {
     public static final String PASSWORD = "password123";
     public static final String USERNAME = "사용자";
 
-    public static final int FROM_PRESENT_MONEY = 30000;
+    public static final int FROM_PRESENT_MONEY = 20000;
     public static final int TO_PRESENT_MONEY = 10000;
     public static final int MONEY = 10000;
     public static final String ACCOUNT_PASSWORD = "1234";
@@ -48,10 +49,15 @@ public class TestData {
     }
 
     private Account getAccount(String accountNumber) {
-        Account account = em.createQuery("select a from Account a where a.accountNumber= :accountNumber", Account.class)
+        return em.createQuery("select a from Account a where a.accountNumber= :accountNumber", Account.class)
                 .setParameter("accountNumber", accountNumber)
                 .getResultList().stream().findAny().get();
-        return account;
+    }
+
+    public Friendship findFriendshipByOwnerId(String ownerId){
+        return em.createQuery("select f from Friendship f where f.ownerId= :ownerId", Friendship.class)
+                .setParameter("ownerId", ownerId)
+                .getResultList().stream().findAny().get();
     }
 
 }

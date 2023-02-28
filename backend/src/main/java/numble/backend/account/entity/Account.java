@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import numble.backend.account.exception.AccountExceptionType;
 import numble.backend.common.exception.BusinessException;
+import numble.backend.friendship.entity.Friendship;
 import numble.backend.member.entity.Member;
 
 import javax.persistence.*;
@@ -21,6 +22,9 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "account_id")
     private Long id;
+
+    @Version
+    private Integer version;
 
     @Column(name = "account_number")
     private String accountNumber;
@@ -43,15 +47,21 @@ public class Account {
         this.owner = owner;
     }
 
+    public Account(String accountPassword, Member owner, int amount) {
+        this.accountNumber = createAccountNumber();
+        this.accountPassword = accountPassword;
+        this.amount = amount;
+        this.owner = owner;
+    }
+
     /* 비즈니스 로직 */
     public void deposit(int money){
-        int presentMoney = this.amount;
-        this.amount = presentMoney + money;
+        this.amount += money;
     }
 
     public void withdrawal(int money){
-        int presentMoney = this.amount;
-        this.amount = presentMoney - money;
+        isPossible(money);
+        this.amount -= money;
     }
 
     public void checkAccountPassword(String accountPassword){
@@ -79,6 +89,14 @@ public class Account {
         if (!result){
             throw new BusinessException(AccountExceptionType.NOT_FRIEND);
         }
+    }
+
+    public Friendship findFriend(List<Friendship> friendships){
+        Friendship friendship = friendships.stream()
+                .filter(f -> f.getFriendId().equals(owner.getUserId()))
+                .findAny()
+                .orElseThrow(() -> new BusinessException(AccountExceptionType.NOT_FRIEND));
+        return friendship;
     }
 
     /* get */

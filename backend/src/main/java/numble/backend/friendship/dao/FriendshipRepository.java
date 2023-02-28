@@ -10,9 +10,12 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
-    @Query("select distinct m from Member m inner join Friendship f on m.userId = f.friendId where f.ownerId=: ownerId")
+    @Query("select distinct m from Member m" +
+            " inner join Friendship f" +
+            " on m.userId = f.friendId" +
+            " where f.ownerId= :ownerId")
     List<Member> findFriendList(@Param("ownerId") String ownerId, Pageable pageable);
 
-    @Query("select f.friendId from Friendship f where f.ownerId= :ownerId")
-    List<String> findAllByOwnerId(@Param("ownerId") String ownerId);
+    @Query("select f from Friendship f where f.ownerId= :ownerId")
+    List<Friendship> findAllByOwnerId(@Param("ownerId") String ownerId);
 }

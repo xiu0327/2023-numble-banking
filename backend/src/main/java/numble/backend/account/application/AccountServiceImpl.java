@@ -10,7 +10,9 @@ import numble.backend.account.entity.Account;
 import numble.backend.account.exception.AccountExceptionType;
 import numble.backend.common.dto.BasicResponseDTO;
 import numble.backend.common.exception.BusinessException;
+import numble.backend.common.util.TransactionHandler;
 import numble.backend.friendship.dao.FriendshipRepository;
+import numble.backend.friendship.entity.Friendship;
 import numble.backend.member.dao.MemberRepository;
 import numble.backend.member.entity.Member;
 import numble.backend.member.exception.MemberExceptionType;
@@ -20,12 +22,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class AccountServiceImpl implements AccountService{
 
     private final AccountRepository accountRepository;
     private final MemberRepository memberRepository;
     private final FriendshipRepository friendshipRepository;
+    private final TransactionHandler transactionHandler;
 
     @Override
     @Transactional
@@ -41,24 +43,28 @@ public class AccountServiceImpl implements AccountService{
     }
 
     @Override
-    @Transactional
     public TransferResponseDTO transfer(String from, String to, String password, int money) {
         Account fromAccount = getAccount(from);
         fromAccount.checkAccountPassword(password);
-        fromAccount.isPossible(money);
         Account toAccount = getAccount(to);
-        toAccount.isFriend(friendshipRepository.findAllByOwnerId(fromAccount.getOwner().getUserId()));
-        fromAccount.withdrawal(money);
-        toAccount.deposit(money);
+        Friendship friendship = toAccount.findFriend(friendshipRepository.findAllByOwnerId(fromAccount.getOwner().getUserId()));
+        transactionHandler.runInTransaction(() -> {
+            fromAccount.withdrawal(money);
+            toAccount.deposit(money);
+            friendship.increaseTransaction();
+        });
         return new TransferResponseDTO(toAccount.getOwner().getUsername() + "님 에게 " + money + " 원을 이체하였습니다.");
     }
 
+
+    @Transactional(readOnly = true)
     private Account getAccount(String userAccount) {
         return accountRepository.findAccountByNumber(userAccount)
                 .orElseThrow(() -> new BusinessException(AccountExceptionType.NOT_FOUND_ACCOUNT));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public AccountDTO findAccount(String accountNumber) {
         Account account = getAccount(accountNumber);
         return AccountDTO.builder()
