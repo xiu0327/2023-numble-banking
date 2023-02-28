@@ -9,7 +9,7 @@
 
 ## 1.2 요구사항 분석 및 도메인 모델링
 
-<img width="917" alt="스크린샷 2023-02-23 오후 10 42 09" src="https://user-images.githubusercontent.com/78461009/221401897-815bd51a-d30e-4c86-a30d-66507aa0b25b.png">
+<img width="800" alt="스크린샷 2023-02-23 오후 10 42 09" src="https://user-images.githubusercontent.com/78461009/221401897-815bd51a-d30e-4c86-a30d-66507aa0b25b.png">
 
 - [요구사항 분석 및 도메인 모델링](https://github.com/xiu0327/2023-numble-banking/wiki/%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD-%EB%B6%84%EC%84%9D-%EB%B0%8F-%EB%8F%84%EB%A9%94%EC%9D%B8-%EB%AA%A8%EB%8D%B8%EB%A7%81)
 
