@@ -61,7 +61,7 @@ MySQL은 innoDB라는 스토리지 엔진을 사용한다. innoDB 엔진은 여�
 
 →  **애너테이션을 활용한 연관매핑은 최대한 지양한다.**
 
-- [연관매핑을 지향하는 이유](https://github.com/xiu0327/2023-numble-banking/wiki/%EC%97%B0%EA%B4%80%EB%A7%A4%ED%95%91%EC%9D%84-%EC%A7%80%ED%96%A5%ED%95%98%EB%8A%94-%EC%9D%B4%EC%9C%A0)
+- [연관매핑을 지양하는 이유](https://github.com/xiu0327/2023-numble-banking/wiki/%EC%97%B0%EA%B4%80%EB%A7%A4%ED%95%91%EC%9D%84-%EC%A7%80%ED%96%A5%ED%95%98%EB%8A%94-%EC%9D%B4%EC%9C%A0)
 
 # 5. 트랜잭션 원자성 보장 및 동시성 문제 해결
 
