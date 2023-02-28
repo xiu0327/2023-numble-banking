@@ -55,7 +55,7 @@ MySQL은 innoDB라는 스토리지 엔진을 사용한다. innoDB 엔진은 여�
 
 ### 4.1 코딩 표준
 
-- [코딩 표준](https://github.com/xiu0327/2023-numble-banking/wiki/%F0%9F%8C%9E-%EC%BD%94%EB%94%A9-%ED%91%9C%EC%A4%80)
+- [코딩 표준](https://github.com/xiu0327/2023-numble-banking/wiki/%EC%BD%94%EB%94%A9-%ED%91%9C%EC%A4%80)
 
 ### 4.2 연관매핑
 
