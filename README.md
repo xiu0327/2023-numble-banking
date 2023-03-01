@@ -15,9 +15,10 @@
 
 ## 1.3 기술 스택
 
-| SpringBoot | MySQL |  JPA   |  JUnit   |
-| :--------: | :--------: | :------: | :-----: |
-|   <img width="100" height="100" src="https://user-images.githubusercontent.com/78461009/221402061-1d45c959-b47f-4b9f-b078-d483132b0066.jpg" />   |   <img width="100" height="100" src="https://user-images.githubusercontent.com/78461009/221402167-e521a45a-e55c-4992-a993-747d44c75c21.jpeg" />    | <img width="100" height="100" src="https://user-images.githubusercontent.com/78461009/221402410-676c7da0-fa34-431c-a44a-482edcd6ce41.png" /> | <img width="100" height="100" src="https://user-images.githubusercontent.com/78461009/221402423-7cba955f-cc75-41bd-bb34-120c491bf190.jpg" /> |
+| SpringBoot | MySQL |  JPA   |  JUnit   |  Spring Security   |
+| :--------: | :--------: | :------: | :-----: | :-----: |
+|   <img width="100" height="100" src="https://user-images.githubusercontent.com/78461009/221402061-1d45c959-b47f-4b9f-b078-d483132b0066.jpg" />   |   <img width="100" height="100" src="https://user-images.githubusercontent.com/78461009/221402167-e521a45a-e55c-4992-a993-747d44c75c21.jpeg" />    | <img width="100" height="100" src="https://user-images.githubusercontent.com/78461009/221402410-676c7da0-fa34-431c-a44a-482edcd6ce41.png" /> | <img width="100" height="100" src="https://user-images.githubusercontent.com/78461009/221402423-7cba955f-cc75-41bd-bb34-120c491bf190.jpg" /> | <img width="100" height="100" src="https://user-images.githubusercontent.com/78461009/222109105-27f2dfe2-8cd8-441d-ab77-8b9425220eb5.png" /> |
+
 
 # 2. RDB
 
@@ -78,3 +79,9 @@ MySQL은 innoDB라는 스토리지 엔진을 사용한다. innoDB 엔진은 여�
 → 거래량이 높은 친구 순으로 친구 목록 조회 해보기
 
 - [거래량에 대한 고찰](https://github.com/xiu0327/2023-numble-banking/wiki/%EA%B1%B0%EB%9E%98%EB%9F%89%EC%97%90-%EB%8C%80%ED%95%9C-%EA%B3%A0%EC%B0%B0)
+
+# 7. 인증/인가 구현
+
+→ Spring Security를 이용하여 JWT으로 인증/인가 기능 구현
+
+- [로그인, 결코 간단하지 않은 기능](https://github.com/xiu0327/2023-numble-banking/wiki/%EB%A1%9C%EA%B7%B8%EC%9D%B8,-%EA%B2%B0%EC%BD%94-%EA%B0%84%EB%8B%A8%ED%95%98%EC%A7%80-%EC%95%8A%EC%9D%80-%EA%B8%B0%EB%8A%A5)
