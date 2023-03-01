@@ -1,5 +1,4 @@
-package numble.backend.account.dto;
-
+package numble.backend.jwt.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,10 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
 @NoArgsConstructor
+@Builder
 @AllArgsConstructor
-public class FindAccountRequestDTO {
-    private String accountNumber;
-    private String accountPassword;
+public class GetTokenRequestDTO {
+    private String accessToken;
+    private String refreshToken;
 }

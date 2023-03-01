@@ -4,10 +4,8 @@ import lombok.RequiredArgsConstructor;
 import numble.backend.account.application.AccountService;
 import numble.backend.account.dto.*;
 import numble.backend.common.dto.BasicResponseDTO;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,16 +14,17 @@ public class AccountController {
     private final AccountService accountService;
 
     @PostMapping("/api/accounts")
+    @ResponseStatus(HttpStatus.CREATED)
     public BasicResponseDTO<String> createAccount(@RequestBody CreateAccountRequestDTO request){
         return accountService.create(request.getUserId(), request.getPassword());
     }
 
     @GetMapping("/api/accounts")
     public AccountDTO findAccount(@RequestBody FindAccountRequestDTO request){
-        return accountService.findAccount(request.getAccountNumber());
+        return accountService.findAccount(request.getAccountNumber(), request.getAccountPassword());
     }
 
-    @GetMapping("/api/accounts/transfer")
+    @PostMapping("/api/accounts/transfer")
     public TransferResponseDTO transfer(@RequestBody TransferRequestDTO request){
         TransferResponseDTO response = accountService.transfer(
                 request.getFromAccountNumber(),

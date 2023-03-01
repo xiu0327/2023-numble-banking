@@ -65,8 +65,9 @@ public class AccountServiceImpl implements AccountService{
 
     @Override
     @Transactional(readOnly = true)
-    public AccountDTO findAccount(String accountNumber) {
+    public AccountDTO findAccount(String accountNumber, String accountPassword) {
         Account account = getAccount(accountNumber);
+        account.checkAccountPassword(accountPassword);
         return AccountDTO.builder()
                 .userId(account.getOwner().getUserId())
                 .accountNumber(account.getAccountNumber())

@@ -1,4 +1,4 @@
-package numble.backend.member.dto.response;
+package numble.backend.member.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,10 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class JoinMemberResponseDTO {
-    private Long memberId;
-    private String message;
+@Builder
+public class LoginMemberRequestDTO {
+    private String userId;
+    private String password;
 }

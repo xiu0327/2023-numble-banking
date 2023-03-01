@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
  * jwt 을 사용하지 않은 순수 인증/인가 로직
  */
 
-@Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class PlainMemberAuthServiceImpl implements MemberAuthService{

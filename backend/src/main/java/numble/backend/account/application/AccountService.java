@@ -13,6 +13,6 @@ import numble.backend.common.dto.BasicResponseDTO;
 public interface AccountService {
     BasicResponseDTO<String> create(String ownerId, String accountPassword);
     TransferResponseDTO transfer(String from, String to, String password, int money);
-    AccountDTO findAccount(String accountNumber);
+    AccountDTO findAccount(String accountNumber, String accountPassword);
     BasicResponseDTO<Boolean> notify(String message);
 }

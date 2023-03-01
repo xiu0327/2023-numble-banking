@@ -1,10 +1,12 @@
 package numble.backend.member.value;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import numble.backend.common.exception.BusinessException;
 import numble.backend.member.exception.MemberExceptionType;
 
 @NoArgsConstructor
+@Getter
 public class Password {
     private String password;
 
@@ -12,8 +14,8 @@ public class Password {
         this.password = password;
     }
 
-    public Password encryptPassword(){
-        return this;
+    public void encryptPassword(String password){
+        this.password = password;
     }
 
     public void isSamePassword(String password){

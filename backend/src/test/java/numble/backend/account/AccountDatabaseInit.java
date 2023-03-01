@@ -31,7 +31,6 @@ public class AccountDatabaseInit {
     }
 
     @Test
-    @Commit
     void friend_init(){
         String fromID = testData.createMember("owner111");
 

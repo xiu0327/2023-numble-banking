@@ -128,7 +128,6 @@ class FriendshipServiceImplTest {
             Thread.sleep(500); // save 시간
         }
         log.info("연관 매핑 하지 않은 시간 = {}", System.currentTimeMillis() - start2);
-
     }
     Member selectMember(String id){
         return em.createQuery("select m from Member m where m.userId= :id", Member.class)
