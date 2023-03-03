@@ -52,6 +52,10 @@ MySQL은 innoDB라는 스토리지 엔진을 사용한다. innoDB 엔진은 여�
 
 흔히 REST API를 사용하고 있다 하지만, 실제 REST API의 설계 원칙을 모두 준수하여 개발하는 사람은 드물다. REST API는 HATEOAS라는 원칙을 지켜야 하는데, 이를 지키기 쉽지 않기 때문이다. HATEOAS는 응답 본문에 애플리케이션 상태 전이가 가능한 경우를 명시해야 한다. 그러나 현재 프로젝트의 API 직렬화 포맷은 Json이기 때문에 응답 본문에 상태 전이를 표시하기 힘들다. 또한 REST API의 설계 원칙을 따르지 않아도 현재 요구사항을 만족하는 API를 충분히 만들 수 있다.
 
+## 3.1 API 명세서
+
+- [API 명세서](https://documenter.getpostman.com/view/21321756/2s93CUKBJN)
+
 # 4. 코드 설계
 
 ### 4.1 코딩 표준
